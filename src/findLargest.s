@@ -1,7 +1,7 @@
         .section .data
         .globl array
 array:                          #define variable is array(a countinuos address in memory)
-        .long 89 ,55, 11 , 69, 87, 42, 32, 41, 88, 100, 64, 9, 0
+        .int 89 ,55, 11 , 69, 87, 42, 32, 41, 88, 100, 64, 9, 0
 
         .section .text
         .globl _start
