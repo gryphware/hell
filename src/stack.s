@@ -4,16 +4,16 @@
       .global _start
 
 _start:
-# we need to calculate 3 ^ 4 + 4 ^ 3
+# we need to calculate 3 ^ 2 + 4 ^ 0
 # so we will cal (3^4) first
-      pushl $3            #parameter #1
-      pushl $4            #parameter #2
+      pushl $2            #parameter #1
+      pushl $3            #parameter #2
       call power
       addl $8, %esp
       pushl %eax          #store result of (3^4) at the top of stack
 
+      pushl $0
       pushl $4
-      pushl $3
       call power
       add $8, %esp
       popl %ebx           #%eax had result, so in the top of stack (-4) has
@@ -33,6 +33,15 @@ power:
       movl 12(%ebp), %ecx #2 -> %ecx
 
       movl %ebx, -4(%ebp) #result (not this time)
+
+      cmpl $0, %ecx
+      je if_zero
+
+      jmp power_loop_start
+
+if_zero:
+      movl $1, -4(%ebp)
+      jmp end_loop_power
 
 power_loop_start:
       cmpl $1, %ecx
