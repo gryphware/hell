@@ -15,10 +15,10 @@ _start:
 
     int $LINUX_SYSCALL
 
+    movl %eax, %edx
     movl $SYS_WRITE, %eax
     movl $STDOUT, %ebx
     movl $BUFFER_DATA, %ecx
-    movl $BUFFER_SIZE, %edx
 
     int $LINUX_SYSCALL
 
