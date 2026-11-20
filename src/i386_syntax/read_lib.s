@@ -1,5 +1,5 @@
-	.include "do_a_shared_lib/linux_const.s"
-	.include "do_a_shared_lib/record_def.s"
+	.include "lib/linux_const.s"
+	.include "lib/record_def.s"
 	
 	.type read_lib, @function
 	.globl read_lib

@@ -1,9 +1,9 @@
-	.include "do_a_shared_lib/linux_const.s"
-	.include "do_a_shared_lib/record_def.s"
+	.include "lib/linux_const.s"
+	.include "lib/record_def.s"
 
 	.section .data
 file_input:
-	.ascii "file.dat\0"
+	.ascii "hello.dat\0"
 file_output:
 	.ascii "file_output.dat\0"
 
@@ -54,20 +54,27 @@ _start:
 	#read loop
 read_loop:
 	pushl ST_INPUT_FILE_DES(%ebp)
-	pushl RECORD_BUFFER
+	pushl $RECORD_BUFFER
 	call read_lib
 	addl $8, %esp
 
 	#when hit zero => out this program
-	cmpl $0, %eax
-	je end_program
+	cmpl $RECORD_SIZE, %eax
+	jne end_program
 
-	pushl ST_OUTPUT_FILE_DES(%ebp)
-	pushl RECORD_BUFFER
-	call write_lib
-	addl $8, %esp
+  pushl $RECORD_FIRSTNAME + RECORD_BUFFER
+  call strlen
+  addl $4, %esp
+  
+	#now we are having strlen of section buffer
+  movl %eax, %edx
+  movl $SYS_WRITE, %eax
+  movl ST_OUTPUT_FILE_DES(%ebp), %ebx
+  movl $RECORD_FIRSTNAME + RECORD_BUFFER, %ecx
 
+  int $LINUX_SYSCALL
 
+  
 close_output_file_error:	
 	movl $SYS_CLOSE, %eax
 	movl ST_OUTPUT_FILE_DES(%ebp), %ebx
