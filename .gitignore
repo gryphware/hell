@@ -1,0 +1,15 @@
+#ignore obj file from gnu-as
+*.o
+
+#ignore file *.dat created by some asm file
+*.dat
+
+#executable files (makefile / as / ld outputs)
+/program
+/a.out
+run
+a.out
+
+#emacs saved
+*.o~
+*.s~

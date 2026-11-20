@@ -1,5 +1,5 @@
-    .include "src/linux_const.s"
-    .include "src/record_def.s"
+    .include "do_a_shared_lib/linux_const.s"
+    .include "do_a_shared_lib/record_def.s"
 
     .section .data
 record1:
@@ -18,7 +18,7 @@ record1:
     .byte 0
     .endr
 
-    .long 20
+    .ascii "20\n\0"
 
 file_name:
     .ascii "hello.dat\0"
@@ -39,13 +39,29 @@ _start:
 
     int $LINUX_SYSCALL
 
+    cmpl $0, %eax
+    jle open_failed
+
     movl %eax, ST_OUTPUT_FILEDES(%ebp)
 
     push ST_OUTPUT_FILEDES(%ebp)
     push $record1
-    call write_record
+    call write_lib
     addl $8, %esp
 
+    #when it done, jmp to success one
+    jmp successful_exit
+  
+open_failed:
+    movl %eax, %ebx
+    movl $SYS_CLOSE, %eax
+    int $LINUX_SYSCALL
+
+    movl $SYS_EXIT, %eax
+    movl $1, %ebx
+    int $LINUX_SYSCALL
+  
+successful_exit:
     movl $SYS_CLOSE, %eax
     movl ST_OUTPUT_FILEDES(%ebp), %ebx
     int $LINUX_SYSCALL

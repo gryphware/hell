@@ -1,12 +1,12 @@
-    .include "src/linux_const.s"
-    .include "src/record_def.s"
-    .type write_record, @function
-    .globl write_record
+    .include "do_a_shared_lib/linux_const.s"
+    .include "do_a_shared_lib/record_def.s"
+    .type write_lib, @function
+    .globl write_lib
 
     .equ ST_FILEDES, 12
     .equ ST_BUFFER_READ, 8
 
-write_record:
+write_lib:
     pushl %ebp
     movl %esp, %ebp
 
