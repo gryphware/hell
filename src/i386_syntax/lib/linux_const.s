@@ -5,7 +5,7 @@
 	.equ SYS_OPEN, 5
 	.equ SYS_CLOSE, 6
 	.equ SYS_BRK, 45
-	.equ LINUX_SYSCALL, 0x80
+	.equ SYSCALL, 0x80
 	
 	#file descriptor
 	.equ STDIN, 0
